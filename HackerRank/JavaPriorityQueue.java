@@ -55,7 +55,7 @@ class Priorities {
     }
 }
 
-public class Solution {
+public class JavaPriorityQueue {
     private final static Scanner scan = new Scanner(System.in);
     private final static Priorities priorities = new Priorities();
 
