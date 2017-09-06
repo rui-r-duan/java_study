@@ -35,7 +35,7 @@ abstract class Tree {
 }
 
 class TreeNode extends Tree {
-    private ArrayList<Tree> children  = new ArrayList<>();
+    private ArrayList<Tree> children = new ArrayList<>();
 
     public TreeNode(int value, Color color, int depth) {
         super(value, color, depth);
@@ -65,7 +65,9 @@ class TreeLeaf extends Tree {
 
 abstract class TreeVis {
     public abstract int getResult();
+
     public abstract void visitNode(TreeNode node);
+
     public abstract void visitLeaf(TreeLeaf leaf);
 }
 
@@ -138,25 +140,47 @@ class FancyVisitor extends TreeVis {
     }
 }
 
-public class JavaVisitorPattern {
-    private static int[] values;
-    private static Color[] colors;
-    private static HashMap<Integer, HashSet<Integer>> map; // neighbor map
+public class Solution {
+    private class GraphTree {
+        int[] values;
+        Color[] colors;
+        HashMap<Integer, HashSet<Integer>> map; // neighbor map
 
-    public static Tree solve() {
+        GraphTree(int numNodes) {
+            values = new int[numNodes]; // given: each value >= 1 && <= 1000
+            colors = new Color[numNodes]; // given: each color is in the set {0, 1}
+            map = new HashMap<>(numNodes);
+            for (int i = 0; i < numNodes; i++) {
+                map.put(i + 1, new HashSet<>());
+            }
+        }
+
+        void addNeighborOf(Integer node, Integer newNeighbor) {
+            HashSet<Integer> neighbors = map.get(node); // neighbors != null
+            neighbors.add(newNeighbor);
+        }
+
+        // remove treeNum's parent from its neighbors, only with its children left
+        void removeParentMappings(Integer rootNodeNum) {
+            for (Integer treeNum : map.get(rootNodeNum)) {
+                map.get(treeNum).remove(rootNodeNum);
+                removeParentMappings(treeNum);
+            }
+        }
+    }
+
+    static Tree solve() {
         // read the tree from STDIN and return its root as a return value of this function
         Scanner scanner = new Scanner(System.in);
         int numNodes = scanner.nextInt(); // given: 2 <= numNodes <= 100_000
+        GraphTree graphTree = new Solution().new GraphTree(numNodes);
         int i;
-        values = new int[numNodes]; // given: each value >= 1 && <= 1000
-        colors = new Color[numNodes]; // given: each color is in the set {0, 1}
         for (i = 0; i < numNodes; i++) {
-            values[i] = scanner.nextInt();
+            graphTree.values[i] = scanner.nextInt();
         }
         for (i = 0; i < numNodes; i++) {
-            colors[i] = scanner.nextInt() == 1 ? Color.GREEN : Color.RED;
+            graphTree.colors[i] = scanner.nextInt() == 1 ? Color.GREEN : Color.RED;
         }
-        map = new HashMap<>(numNodes);
         for (i = 1; i <= numNodes - 1; i++) {
             int u = scanner.nextInt(); // given: each u,v >= 1 && <= numNodes
             int v = scanner.nextInt();
@@ -165,69 +189,43 @@ public class JavaVisitorPattern {
             // so we create both (u, u's neighbors) and (v, v's neighbors) in the map
             // to make sure that every node mentioned in the input
             // has its complete neighbors in the map
-            addNeighborOf(u, v); // add u's neighbor v to map
-            addNeighborOf(v, u); // add v's neighbor u to map
+            graphTree.addNeighborOf(u, v); // add u's neighbor v to map
+            graphTree.addNeighborOf(v, u); // add v's neighbor u to map
         }
         scanner.close();
         // Now map contains at most numNodes entries with each entries being <node, neighbors>,
         // neighbors may contain the node's parent.
 
         // Remove the parent mapping (pointing to the parent of a node) in the map
-        removeParentMappings(1);
+        graphTree.removeParentMappings(1);
         // Now map contains only the children of the nodes: <node, children>
 
-        TreeNode root = new TreeNode(values[0], colors[0], 0);
-        addChildren(root, 1);
+        TreeNode root = new TreeNode(graphTree.values[0], graphTree.colors[0], 0);
+        addChildren(root, 1, graphTree);
         return root;
     }
 
-    private static void addNeighborOf(Integer node, Integer newNeighbor) {
-        HashSet<Integer> neighbors = map.get(node);
-        if (neighbors != null) {
-            neighbors.add(newNeighbor);
-        }
-        else {
-            neighbors = new HashSet<>();
-            neighbors.add(newNeighbor);
-            map.put(node, neighbors);
-        }
-    }
-
-    private static void removeParentMappings(Integer rootNodeNum) {
-        HashSet<Integer> neighbors = map.get(rootNodeNum);
-        for (Integer treeNum : neighbors) {
-            HashSet<Integer> nbs = map.get(treeNum);
-            // remove treeNum's parent from its neighbors, only with its children left
-            if (nbs != null) {
-                nbs.remove(rootNodeNum);
-                removeParentMappings(treeNum);
-            }
-        }
-    }
-
-    // recursively add chilren of the TreeNode parent whose number is parentNum
+    // recursively add children of the TreeNode parent whose number is parentNum
     // parentNum is used as a key in the neighbor map
     // pre: parent is not a leaf
     // post: a TreeNode or a TreeLeaf is added to the TreeNode parent
-    private static void addChildren(TreeNode parent, Integer parentNum) {
-        HashSet<Integer> children = map.get(parentNum);
-        for (Integer treeNum : map.get(parentNum)) {
+    private static void addChildren(TreeNode parent, Integer parentNum, GraphTree graphTree) {
+        for (Integer treeNum : graphTree.map.get(parentNum)) {
             // for each children, check if it is a leaf or a non-leaf
-            HashSet<Integer> grandchildren = map.get(treeNum);
-            if (grandchildren == null || grandchildren.isEmpty()) {
+            HashSet<Integer> grandchildren = graphTree.map.get(treeNum);
+            if (grandchildren.isEmpty()) {
                 // no grandchildren, treeNum is a leaf
-                TreeLeaf leaf = new TreeLeaf(values[treeNum - 1],
-                        colors[treeNum - 1], parent.getDepth() + 1);
+                TreeLeaf leaf = new TreeLeaf(graphTree.values[treeNum - 1],
+                        graphTree.colors[treeNum - 1], parent.getDepth() + 1);
                 parent.addChild(leaf);
-            }
-            else {
+            } else {
                 // treeNum is a non-leaf
-                TreeNode node = new TreeNode(values[treeNum - 1],
-                        colors[treeNum - 1], parent.getDepth() + 1);
+                TreeNode node = new TreeNode(graphTree.values[treeNum - 1],
+                        graphTree.colors[treeNum - 1], parent.getDepth() + 1);
                 parent.addChild(node);
 
                 // recursively add the children of this node
-                addChildren(node, treeNum);
+                addChildren(node, treeNum, graphTree);
             }
         }
     }
