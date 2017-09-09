@@ -38,7 +38,7 @@ public class BigDecimal {
 
         // Write your code here
         Arrays.sort(s, 0, n, (o1, o2) -> {
-            BigDecimal b1 = new BigDecimal(o1);
+            BigDecimal b1 = new BigDecimal(o1); // throws RuntimeException
             BigDecimal b2 = new BigDecimal(o2);
             return b2.compareTo(b1);
         });
