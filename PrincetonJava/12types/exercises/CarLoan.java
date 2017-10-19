@@ -6,7 +6,7 @@
  *  the specified number of years at the specified interest rate,
  *  where interested is compounded monthly.
  *
- *                  principal * rate
+ *                  principal * r
  *     payment =  -------------------      where n = 12 * years, r = rate / 12 / 100
  *                1  - (1 + r)^(-n)
  *
