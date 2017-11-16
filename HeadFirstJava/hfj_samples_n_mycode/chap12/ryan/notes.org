@@ -1,0 +1,12 @@
+* import java.awt.* doesn't imply import java.awt.event.*
+* inner class can be public
+* MyInner innerObj = new MyInner(); ERROR
+error: cannot find symbol MyInner
+* MyOuter.MyInner innerObj = new MyOuter.MyInner(); ERROR
+error: an enclosing instance that contains MyOuter.MyInner is required
+* Inner class event handling V.S. inherited widgets event handling
+compare chap12/ryan/SeparateListener.java and chap12/TwoButtons.java
+* while using javax.sound.midi.*, it will create prefs:
+Aug 23, 2014 2:34:37 PM java.util.prefs.WindowsPreferences <init>
+WARNING: Could not open/create prefs root node Software\JavaSoft\Prefs at root 0x80000002. Windows RegCreateKeyEx(...) returned error code 5.
+

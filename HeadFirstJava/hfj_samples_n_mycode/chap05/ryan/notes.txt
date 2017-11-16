@@ -1,0 +1,5 @@
+* Cannot new an instance of a inner class in the outer class's static method.
+** inner classes cannot have static declarations
+* Do I need to try catch when a block of code might throw RuntimeException?
+* If my override method decide to rethrow an exception, does it need to declare throw?
+* When we use "import", what is the root, current directory or something else?

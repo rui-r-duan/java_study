@@ -1,0 +1,52 @@
+* thinking in objects
+attributes: data
+behaviors: methods
+
+inheritance: attributes and behaviors
+
+** objective
+Reuse interface, and achieve polymorphism; reuse data.
+Abstract data and behaviors, extract the common data and behaviors.
+Avoid duplicating code (in subclasses).
+
+** operations
+
+construct: default constructor, explicitly call super constructor
+
+destruct
+
+multiple inheritance
+
+Compound data and behavior : inheritance!
+
+round, before and after methods
+
+*** Prevent a class from being subclassed
+
+**** The first is access control.
+
+Even though a class can’t be marked private, a class can be non-public (what
+you get if you don’t declare the class as public). A non-public class can be
+subclassed only by classes in the same package as the class. Classes in a
+different package won’t be able to subclass (or even use, for that matter) the
+non-public class.
+
+**** The second thing that stops a class from being subclassed is the keyword modifier final.
+
+A final class means that it’s the end of the inheritance line. Nobody, ever,
+can extend a final class.
+
+**** The third issue is that if a class has only private constructors, it can’t be subclassed.
+
+** techs
+| C++                                       | Java                                  |
+|-------------------------------------------+---------------------------------------|
+| override (virtual method)                 | override                              |
+| overwrite                                 |                                       |
+| abstract class (with pure virtual method) | abstract class (with abstract method) |
+| multiple inheritance                      | interface                             |
+| protected and private inheritance         |                                       |
+
+** Can Continuation help to express the protocol of multiple steps constructor?
+* javac notes
+** Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output

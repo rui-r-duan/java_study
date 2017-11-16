@@ -1,0 +1,4 @@
+-*- org -*-
+
+* A final static variable must be assigned a value either at the time it is declared, or in a static initializer.
+* Assigning a value to a final INSTANCE variable must be either at the time it is declared, or in the constructor.

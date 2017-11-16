@@ -1,0 +1,9 @@
+* synchronized
+SQLiteOpenHelper class:
+public synchronized SSQLiteDatabase getReadableDatabase()
+
+* default access level
+public or private?
+A: Default(package and class can access it).
+
+* When to init the class member data?

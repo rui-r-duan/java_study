@@ -1,0 +1,7 @@
+-*- org -*-
+
+* Exception Rules
+** You cannot have a catch or finally without a try.
+** You cannot put code between the try and the catch.
+** A try MUST be followed by either a catch or a finally.
+** A try with only a finally (no catch) must still declare the exception.

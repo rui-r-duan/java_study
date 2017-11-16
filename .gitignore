@@ -1,2 +1,6 @@
 *~
 *.class
+*.fasl
+*.exe
+*.o
+*.so

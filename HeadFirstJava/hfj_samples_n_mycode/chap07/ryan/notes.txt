@@ -1,0 +1,4 @@
+* for non-abstract methods, if they are overridden, can subclass still access its superclass's overridden methods?
+* public class must be defined in a file with the same name.
+* javac will automatically compile the superclass when the user code is compiled.
+* javac don't need to compile the user code when the superclass gets changed.

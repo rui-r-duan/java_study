@@ -1,0 +1,37 @@
+-*- org -*-
+
+* two Animal classes
+In a package, there can be more than one (say two) source of one class with the same name, for example, class Animal that comes from Dog.java, and class Animal that comes from Animal.java.
+If the users of class Animal uses different versions of class Animal, so long as the interfaces of the two versions don't conflict, then the users don't have to be re-compiled, they can work well with either version of the Animal.
+
+* call the overridden method in the super (base) class - reflection
+JDK 7
+e.g.
+
+public class Test extends Base {
+  public static void main(String[] args) throws Throwable {
+    MethodHandle h1 = MethodHandles.lookup().findSpecial(Base.class, "toString",
+        MethodType.methodType(String.class),
+        Test.class);
+    MethodHandle h2 = MethodHandles.lookup().findSpecial(Object.class, "toString",
+        MethodType.methodType(String.class),
+        Test.class);
+    System.out.println(h1.invoke(new Test()));   // outputs Base
+    System.out.println(h2.invoke(new Test()));   // outputs Test@860d49
+  }
+
+  @Override
+  public String toString() {
+    return "Test";
+  }
+}
+
+class Base {
+  @Override
+  public String toString() {
+    return "Base";
+  }
+}
+
+* Interface methods are implicitly PUBLIC and ABSTRACT, so typing in 'public' and 'abstract' is optional
+Interface is implicitly public.  Neither protected nor private is allowed.
