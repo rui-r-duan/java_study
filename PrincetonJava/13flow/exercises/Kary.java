@@ -1,22 +1,10 @@
 /******************************************************************************
  *  Compilation:  javac Kary.java
- *  Execution:    java Binary n k
+ *  Execution:    java Kary n k
  *  
  *  Prints out n in base k.
  *  n = d_m * k^n + d_(m-1) * k^(m-1) + ... + d_2 * k^2 + d_1 * k + d_0
  * 
- *  % java Binary 5 5
- *  101
- *
- *  % java Binary 106
- *  1101010
- *
- *  % java Binary 0
- *  0
- * 
- *  % java Binary 16
- *  10000
- *
  *  Limitations
  *  -----------
  *  Does not handle negative integers.
