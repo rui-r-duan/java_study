@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1995 - 2008 Sun Microsystems, Inc.  All rights reserved.
+ * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -12,7 +12,7 @@
  *     notice, this list of conditions and the following disclaimer in the
  *     documentation and/or other materials provided with the distribution.
  *
- *   - Neither the name of Sun Microsystems nor the names of its
+ *   - Neither the name of Oracle or the names of its
  *     contributors may be used to endorse or promote products derived
  *     from this software without specific prior written permission.
  *
@@ -27,14 +27,23 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+ */ 
 
-/**
- * The HelloWorldApp class implements an application that
- * simply prints "Hello World!" to standard output.
- */
-public class HelloWorldApp {
-    public static void main(String[] args) {
-        System.out.println("Hello World!"); // Display the string.
-    }
+class InstanceofDemo {
+  public static void main(String[] args) {
+
+    Parent obj1 = new Parent();
+    Parent obj2 = new Child();
+
+    System.out.println("obj1 instanceof Parent: " + (obj1 instanceof Parent));
+    System.out.println("obj1 instanceof Child: " + (obj1 instanceof Child));
+    System.out.println("obj1 instanceof MyInterface: " + (obj1 instanceof MyInterface));
+    System.out.println("obj2 instanceof Parent: " + (obj2 instanceof Parent));
+    System.out.println("obj2 instanceof Child: " + (obj2 instanceof Child));
+    System.out.println("obj2 instanceof MyInterface: " + (obj2 instanceof MyInterface));
+  }
 }
+
+class Parent{}
+class Child extends Parent implements MyInterface{}
+interface MyInterface{}
